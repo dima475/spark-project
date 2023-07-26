@@ -6,8 +6,8 @@ from pyspark import SparkConf
 from pyspark.sql import SparkSession
 from pyspark.sql.types import IntegerType, FloatType
 
-import column_names
-from dataframes import get_data
+import column_names as c
+from dataframes import get_business_data, get_review_data, get_user_data, get_checkin_data, get_tip_data
 
 spark_session = (SparkSession.builder
                  .master("local")
@@ -17,6 +17,19 @@ spark_session = (SparkSession.builder
 
 
 def describe_data(df):
+    """
+        Provides a basic description of the DataFrame.
+
+        This function prints the names of columns, the number of rows, the number of columns,
+        and the schema of the DataFrame.
+
+        Parameters:
+        df (pyspark.sql.DataFrame): The DataFrame to be described.
+
+        Returns:
+        None: This function does not return anything; it prints the information directly.
+    """
+
     print("Names of columns")
     print(df.columns)
     print()
@@ -35,6 +48,19 @@ def describe_data(df):
 
 
 def describe_numeric(df):
+    """
+        Generate descriptive statistics for numeric columns in the DataFrame.
+
+        This function calculates and displays summary statistics for the numeric columns
+        (columns with data types 'IntegerType' or 'FloatType') in the DataFrame.
+
+        Parameters:
+        df (pyspark.sql.DataFrame): The DataFrame containing numeric columns.
+
+        Returns:
+        None: This function does not return anything; it prints the summary statistics directly.
+    """
+
     numeric_columns = [field.name for field in df.schema.fields if
                        isinstance(field.dataType, (IntegerType, FloatType))]
 
@@ -42,7 +68,11 @@ def describe_numeric(df):
     df.select(numeric_columns).summary().show()
 
 
-business_df, review_df, user_df, checkin_df, tip_df = get_data(spark_session)
+business_df = get_business_data(spark_session)
+review_df = get_review_data(spark_session)
+user_df = get_user_data(spark_session)
+checkin_df = get_checkin_data(spark_session)
+tip_df = get_tip_data(spark_session)
 
 # print("Information about 'Business' DataFrame")
 # describe_data(business_df)
