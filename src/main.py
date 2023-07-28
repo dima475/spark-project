@@ -18,44 +18,51 @@ spark_session = (SparkSession.builder
 business_df = get_business_data(spark_session)
 review_df = get_review_data(spark_session)
 user_df = get_user_data(spark_session)
-# checkin_df = get_checkin_data(spark_session)
-# tip_df = get_tip_data(spark_session)
+checkin_df = get_checkin_data(spark_session)
+tip_df = get_tip_data(spark_session)
 
 
-# print("Information about 'Business' DataFrame")
-# describe_data(business_df)
-# describe_numeric(business_df)
-#
-# print("Information about 'Review' DataFrame")
-# describe_data(review_df)
-# describe_numeric(review_df)
-#
-# print("Information about 'User' DataFrame")
-# describe_data(user_df)
-# describe_numeric(user_df)
-#
-# print("Information about 'Checkin' DataFrame")
-# describe_data(checkin_df)
-# describe_numeric(checkin_df)
-#
-# print("Information about 'Tip' DataFrame")
-# describe_data(tip_df)
-# describe_numeric(tip_df)
+print("Information about 'Business' DataFrame")
+describe_data(business_df)
+describe_numeric(business_df)
 
-# result_one = average_business_rating_in_each_city(business_df)
-# result_one.show()
-#
-# result_two = count_of_positive_reviews_for_each_date(review_df)
-# result_two.show()
-#
-# result_three = top_5_business_in_each_city(business_df)
-# result_three.show()
-#
-# result_four = number_of_users_created_by_year(user_df)
-# result_four.show()
-#
-# result_five = top_business_in_each_city_by_category(business_df, "Food")
-# result_five.show()
-#
-# result_six = negative_reviews_for_business(review_df, business_df)
-# result_six.show()
+print("Information about 'Review' DataFrame")
+describe_data(review_df)
+describe_numeric(review_df)
+
+print("Information about 'User' DataFrame")
+describe_data(user_df)
+describe_numeric(user_df)
+
+print("Information about 'Checkin' DataFrame")
+describe_data(checkin_df)
+describe_numeric(checkin_df)
+
+print("Information about 'Tip' DataFrame")
+describe_data(tip_df)
+describe_numeric(tip_df)
+
+result_one = average_business_rating_in_each_city(business_df)
+result_one.show()
+
+result_two = count_of_positive_reviews_for_each_date(review_df)
+result_two.show()
+
+result_three = top_5_business_in_each_city(business_df)
+result_three.show()
+
+result_four = number_of_users_created_by_year(user_df)
+result_four.show()
+
+result_five = top_business_in_each_city_by_category(business_df, "Food")
+result_five.show()
+
+result_six = negative_reviews_for_business(review_df, business_df)
+result_six.show()
+
+load_data(result_one, "result_data/result_one.csv")
+load_data(result_two, "result_data/result_two.csv")
+load_data(result_three, "result_data/result_three.csv")
+load_data(result_four, "result_data/result_four.csv")
+load_data(result_five, "result_data/result_five.csv")
+load_data(result_six, "result_data/result_six.csv")
