@@ -5,7 +5,7 @@ findspark.init()
 from pyspark import SparkConf
 from pyspark.sql import SparkSession
 
-from dataframes import get_business_data, get_review_data, get_user_data, get_checkin_data, get_tip_data
+from dataframes import get_business_data, get_review_data, get_user_data, get_checkin_data, get_tip_data, load_data
 from research import describe_data, describe_numeric
 from business_question import average_business_rating_in_each_city, count_of_positive_reviews_for_each_date, top_5_business_in_each_city, number_of_users_created_by_year, top_business_in_each_city_by_category, negative_reviews_for_business
 
@@ -25,11 +25,11 @@ user_df = get_user_data(spark_session)
 # print("Information about 'Business' DataFrame")
 # describe_data(business_df)
 # describe_numeric(business_df)
-
+#
 # print("Information about 'Review' DataFrame")
 # describe_data(review_df)
 # describe_numeric(review_df)
-
+#
 # print("Information about 'User' DataFrame")
 # describe_data(user_df)
 # describe_numeric(user_df)
@@ -56,6 +56,6 @@ user_df = get_user_data(spark_session)
 #
 # result_five = top_business_in_each_city_by_category(business_df, "Food")
 # result_five.show()
-
-result_six = negative_reviews_for_business(review_df, business_df)
-result_six.show()
+#
+# result_six = negative_reviews_for_business(review_df, business_df)
+# result_six.show()

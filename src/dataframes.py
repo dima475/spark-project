@@ -2,7 +2,6 @@ import pyspark.sql.functions as f
 from pyspark.sql.types import StructType, StructField, StringType, FloatType, IntegerType, MapType, TimestampType
 
 
-
 def get_business_data(spark_session):
     """
         Read data from a JSON file 'yelp_academic_dataset_business.json' and return it as a DataFrame.
