@@ -1,5 +1,4 @@
-import pyspark.sql.functions as f
-from pyspark.sql.types import StructType, StructField, StringType, FloatType, IntegerType, MapType, TimestampType
+from pyspark.sql.types import StructType, StructField, StringType, FloatType, IntegerType, TimestampType
 
 
 def get_business_data(spark_session):
@@ -28,14 +27,12 @@ def get_business_data(spark_session):
         StructField("stars", FloatType(), True),
         StructField("review_count", IntegerType(), True),
         StructField("is_open", IntegerType(), True),  # only 0 or 1 values
-        StructField("attributes", MapType(StringType(), StringType()), True),  # object, business attributes to values
+        StructField("attributes", StringType(), True),  # object, business attributes to values
         StructField("categories", StringType(), True),  # an array of comma separated strings
-        StructField("hours", MapType(StringType(), StringType()), True)
+        StructField("hours", StringType(), True)
         # an object of key day to value hours, hours are using a 24hr clock
     ])
     business_df = spark_session.read.json("data/yelp_academic_dataset_business.json", schema=business_schema)
-
-    business_df = business_df.withColumn("categories", f.split(f.col("categories"), ", "))
     # business_df.show()
 
     return business_df
@@ -165,3 +162,18 @@ def get_tip_data(spark_session):
     # tip_df.show()
 
     return tip_df
+
+
+def load_data(df, path):
+    """
+        Saves a PySpark DataFrame to a CSV file at the specified path.
+
+        Parameters:
+            df (DataFrame): The PySpark DataFrame to be saved to a CSV file.
+            path (str): The path where the DataFrame should be saved.
+
+        Returns:
+            None
+    """
+
+    df.write.csv(path, header=True, mode="overwrite")
