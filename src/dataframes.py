@@ -1,4 +1,6 @@
-from pyspark.sql.types import StructType, StructField, StringType, FloatType, IntegerType, MapType
+import pyspark.sql.functions as f
+from pyspark.sql.types import StructType, StructField, StringType, FloatType, IntegerType, MapType, TimestampType
+
 
 
 def get_business_data(spark_session):
@@ -33,6 +35,8 @@ def get_business_data(spark_session):
         # an object of key day to value hours, hours are using a 24hr clock
     ])
     business_df = spark_session.read.json("data/yelp_academic_dataset_business.json", schema=business_schema)
+
+    business_df = business_df.withColumn("categories", f.split(f.col("categories"), ", "))
     # business_df.show()
 
     return business_df
@@ -61,7 +65,7 @@ def get_review_data(spark_session):
         StructField("funny", IntegerType(), True),
         StructField("cool", IntegerType(), True),
         StructField("text", StringType(), True),
-        StructField("date", StringType(), True),  # this is actually TimestampType
+        StructField("date", TimestampType(), True)
     ])
     review_df = spark_session.read.json("data/yelp_academic_dataset_review.json", schema=review_schema)
     # review_df.show()
@@ -87,7 +91,7 @@ def get_user_data(spark_session):
         StructField("user_id", StringType(), True),
         StructField("name", StringType(), True),
         StructField("review_count", IntegerType(), True),
-        StructField("yelping_since", StringType(), True),  # this is actually TimestampType
+        StructField("yelping_since", TimestampType(), True),
         StructField("useful", IntegerType(), True),
         StructField("funny", IntegerType(), True),
         StructField("cool", IntegerType(), True),
@@ -155,8 +159,8 @@ def get_tip_data(spark_session):
         StructField("user_id", StringType(), True),
         StructField("business_id", StringType(), True),
         StructField("text", StringType(), True),
-        StructField("date", StringType(), True),  # this is actually TimestampType
-        StructField("compliment_count", IntegerType(), True),
+        StructField("date", TimestampType(), True),
+        StructField("compliment_count", IntegerType(), True)
     ])
     tip_df = spark_session.read.json("data/yelp_academic_dataset_tip.json", schema=tip_schema)
     # tip_df.show()
