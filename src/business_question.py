@@ -96,13 +96,13 @@ def top_business_in_each_city_by_category(business_df, category):
                        - 'business_id' (str) - The unique identifier for the business.
                        - 'name' (str) - The name of the business.
                        - 'city' (str) - The city where the business is located.
-                       - 'categories' (array) - An array of categories to which the business belongs.
+                       - 'categories' (str) - A string of comma separated categories to which the business belongs.
                        - 'stars' (float) - The rating of the business.
                        - 'Rank in city by category' (int) - The rank of the business within its city based on star ratings.
     """
 
     window = Window.partitionBy(c.city).orderBy(f.col(c.city).desc(), f.col(c.stars).desc())
-    top_business_in_each_city_by_category_df = (business_df.filter(f.array_contains(f.col(c.categories), category))
+    top_business_in_each_city_by_category_df = (business_df.filter(f.array_contains(f.split(f.col("categories"), ", "), category))
                                                            .select(c.business_id, c.name, c.city, c.categories, c.stars)
                                                            .withColumn("Rank in city by category", f.dense_rank().over(window)))
     return top_business_in_each_city_by_category_df
@@ -127,7 +127,7 @@ def negative_reviews_for_business(review_df, business_df):
     """
 
     negative_review_stars = 2
-    negative_reviews_for_business_df = (review_df.filter(f.col(c.stars) <= negative_review_stars)
+    negative_reviews_for_business_df = (review_df.filter(f.col(c.stars) <= negative_review_stars).withColumnRenamed(c.stars, "stars_review")
                                                  .join(business_df, on=c.business_id)
-                                                 .orderBy(business_df[c.name].desc(), review_df[c.stars].desc()))
+                                                 .orderBy(f.col(c.name).desc(),  f.col("stars_review").desc()))
     return negative_reviews_for_business_df
